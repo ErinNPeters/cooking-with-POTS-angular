@@ -1,0 +1,18 @@
+<h1>Recipes</h1>
+
+<p *ngIf="!recipes"><em>Loading...</em></p>
+
+<table
+  mat-table
+  [dataSource]="recipes"
+  class="mat-elecation-z8"
+  [hidden]="!recipes"
+>
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>Title</th>
+    <td mat-cell *matCellDef="let recipe">{{ recipe.title }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
