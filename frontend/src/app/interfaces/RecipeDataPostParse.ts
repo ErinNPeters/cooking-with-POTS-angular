@@ -1,5 +1,3 @@
-// import { http } from './http';
-
 export interface RecipeData {
   recipeId: number;
   title: string;
@@ -133,60 +131,7 @@ const wait = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-// export const getRecipe = async (
-//   recipeId: number,
-// ): Promise<RecipeData | null> => {
-//   await wait(500);
-//   const results = recipes.filter((r) => r.recipeId === recipeId);
-//   return results.length === 0 ? null : results[0];
-// };
-
-// export const getRecipe = async (
-//   recipeId: number
-// ): Promise<RecipeData | null> => {
-//   const result = await http<RecipeFromServer>({
-//     path: `RecipeAll/${recipeId}`,
-//   });
-//   if (result.ok && result.body) {
-//     return mapRecipeFromServer(result.body);
-//   } else {
-//     return null;
-//   }
-// };
-
 export const getRecipeNow = (recipeId: number): RecipeData => {
   const results = recipes.filter((r) => r.recipeId === recipeId);
   return results[0];
 };
-
-// export const searchRecipes = async (
-//   criteria: string,
-// ): Promise<RecipeData[]> => {
-//   await wait(500);
-//   return recipes.filter(
-//     (r) =>
-//       r.title.toLowerCase().indexOf(criteria.toLowerCase()) >= 0 ||
-//       r.ingredients.filter(
-//         (i) => i.content.toLowerCase().indexOf(criteria.toLowerCase()) >= 0,
-//       ).length > 0 ||
-//       r.steps.filter(
-//         (i) => i.content.toLowerCase().indexOf(criteria.toLowerCase()) >= 0,
-//       ).length > 0,
-//   );
-// };
-
-// export const searchRecipes = async (
-//   criteria: string
-// ): Promise<RecipeData[]> => {
-//   if (!criteria) {
-//     criteria = 'ALL';
-//   }
-//   const result = await http<RecipeFromServer[]>({
-//     path: `?search=${criteria}&page=1&pageSize=20`,
-//   });
-//   if (result.ok && result.body) {
-//     return result.body.map(mapRecipeFromServer);
-//   } else {
-//     return [];
-//   }
-// };
