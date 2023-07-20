@@ -10,6 +10,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecipeSearchComponent } from './recipe-search/recipe-search.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RecipeEditComponent } from './recipe-edit/recipe-edit.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     NavMenuComponent,
     RecipeSearchComponent,
+    RecipeEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
