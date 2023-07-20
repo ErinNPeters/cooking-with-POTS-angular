@@ -1,0 +1,58 @@
+<div class="recipe-edit">
+  <h1>{{ title }}</h1>
+  <p *ngIf="!recipe"><em>Loading...</em></p>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Title:</mat-label>
+      <input
+        matInput
+        formControlName="title"
+        required
+        placeholder="Your recipe title"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ingredients:</mat-label>
+      <textarea
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+        matInput
+        formControlName="ingredients"
+        required
+        placeholder="Your recipe ingredients"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Steps:</mat-label>
+      <textarea
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+        matInput
+        formControlName="steps"
+        required
+        placeholder="Your recipe steps"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-checkbox type="checkbox" formControlName="crockPot"
+      >Does this recipe use a slow cooker?</mat-checkbox
+    >
+
+    <br /><br />
+    <button mat-flat-button color="primary" type="submit">Save</button>
+    <button
+      mat-flat-button
+      color="secondary"
+      type="submit"
+      [routerLink]="['/recipes']"
+    >
+      Cancel
+    </button>
+  </form>
+</div>

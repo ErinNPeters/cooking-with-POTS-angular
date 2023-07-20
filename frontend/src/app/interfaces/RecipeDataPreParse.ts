@@ -1,5 +1,5 @@
 import { RecipeData } from './RecipeDataPostParse';
-import { http } from './http';
+//import { http } from './http';
 
 export interface RecipeDataPreParse {
   recipeId: number;
@@ -29,16 +29,16 @@ const recipeQueue: RecipeDataPreParse[] = new Array();
 //   recipeQueue.push(newRecipe);
 //   return newRecipe;
 // };
-export const postRecipe = async (
-  recipe: RecipeDataPreParse,
-): Promise<RecipeData | undefined> => {
-  const result = await http<RecipeData, RecipeDataPreParse>({
-    path: 'Add',
-    method: 'post',
-    body: recipe,
-  });
-  if (result.ok && result.body) {
-  } else {
-    return undefined;
-  }
-};
+// export const postRecipe = async (
+//   recipe: RecipeDataPreParse
+// ): Promise<RecipeData | undefined> => {
+//   const result = await http<RecipeData, RecipeDataPreParse>({
+//     path: 'Add',
+//     method: 'post',
+//     body: recipe,
+//   });
+//   if (result.ok && result.body) {
+//   } else {
+//     return undefined;
+//   }
+// };
