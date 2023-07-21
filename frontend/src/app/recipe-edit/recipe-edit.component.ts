@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RecipeDataPreParse } from '../interfaces/RecipeDataPreParse';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -24,9 +24,9 @@ export class RecipeEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      title: new FormControl(''),
-      ingredients: new FormControl(''),
-      steps: new FormControl(''),
+      title: new FormControl('', Validators.required),
+      ingredients: new FormControl('', Validators.required),
+      steps: new FormControl('', Validators.required),
       crockPot: new FormControl(''),
     });
     this.loadData();

@@ -10,6 +10,9 @@
         required
         placeholder="Your recipe title"
       />
+      <mat-error *ngIf="this.form.controls['title'].errors?.['required']"
+        >Name is required.</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
@@ -24,6 +27,9 @@
         required
         placeholder="Your recipe ingredients"
       ></textarea>
+      <mat-error *ngIf="this.form.controls['ingredients'].errors?.['required']"
+        >Ingredients are required.</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
@@ -38,6 +44,9 @@
         required
         placeholder="Your recipe steps"
       ></textarea>
+      <mat-error *ngIf="this.form.controls['steps'].errors?.['required']"
+        >Steps are required.</mat-error
+      >
     </mat-form-field>
 
     <mat-checkbox type="checkbox" formControlName="crockPot"
