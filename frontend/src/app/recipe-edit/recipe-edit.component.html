@@ -1,6 +1,6 @@
 <div class="recipe-edit">
   <h1>{{ title }}</h1>
-  <p *ngIf="!recipe"><em>Loading...</em></p>
+  <p *ngIf="this.id && !recipe"><em>Loading...</em></p>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Title:</mat-label>
@@ -45,7 +45,9 @@
     >
 
     <br /><br />
-    <button mat-flat-button color="primary" type="submit">Save</button>
+    <button mat-flat-button color="primary" type="submit">
+      {{ this.id ? "Save" : "Create" }}
+    </button>
     <button
       mat-flat-button
       color="secondary"

@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'recipes', component: RecipeSearchComponent },
   { path: 'recipe/:id', component: RecipeEditComponent },
+  { path: 'recipe', component: RecipeEditComponent },
 ];
 
 @NgModule({
