@@ -2,6 +2,16 @@
 
 <p *ngIf="!recipes"><em>Loading...</em></p>
 
+<button
+  mat-flat-button
+  color="primary"
+  class="btn-add"
+  *ngIf="recipes"
+  [routerLink]="['/recipe']"
+>
+  Add a new recipe
+</button>
+
 <table
   mat-table
   [dataSource]="recipes"

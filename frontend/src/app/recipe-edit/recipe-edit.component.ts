@@ -12,10 +12,9 @@ import { environment } from 'src/environments/environment';
 })
 export class RecipeEditComponent implements OnInit {
   title?: string;
-
   form!: FormGroup;
-
   recipe?: RecipeDataPreParse;
+  id?: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -35,37 +34,55 @@ export class RecipeEditComponent implements OnInit {
 
   loadData() {
     var idParam = this.activatedRoute.snapshot.paramMap.get('id');
-    var id = idParam ? +idParam : 0;
+    this.id = idParam ? +idParam : 0;
 
-    var url = environment.baseUrl + 'Recipes/ForEdit/' + id;
-    this.http.get<RecipeDataPreParse>(url).subscribe({
-      next: (result) => {
-        this.recipe = result;
-        this.title = 'Edit - ' + this.recipe.title;
-        this.form.patchValue(this.recipe);
-      },
-      error: (e) => console.error(e),
-    });
+    if (this.id) {
+      var url = environment.baseUrl + 'Recipes/ForEdit/' + this.id;
+      this.http.get<RecipeDataPreParse>(url).subscribe({
+        next: (result) => {
+          this.recipe = result;
+          this.title = 'Edit - ' + this.recipe.title;
+          this.form.patchValue(this.recipe);
+        },
+        error: (e) => console.error(e),
+      });
+    } else {
+      this.title = 'Create a new Recipe';
+    }
   }
 
   onSubmit() {
-    var recipe = this.recipe;
+    var recipe = this.id ? this.recipe : <RecipeDataPreParse>{};
+
     if (recipe) {
       recipe.title = this.form.controls['title'].value;
       recipe.ingredients = this.form.controls['ingredients'].value;
       recipe.steps = this.form.controls['steps'].value;
-      recipe.crockPot = this.form.controls['crockPot'].value;
+      recipe.crockPot = this.form.controls['crockPot'].value
+        ? this.form.controls['crockPot'].value
+        : false;
 
-      var url = environment.baseUrl + 'Recipes/Update';
-      this.http.put<RecipeDataPreParse>(url, recipe).subscribe({
-        next: (result) => {
-          console.log(
-            'Recipe nubmer' + recipe!.recipeId + ' has been updated.'
-          );
-          this.router.navigate(['/recipes']);
-        },
-        error: (e) => console.error(e),
-      });
+      if (this.id) {
+        var url = environment.baseUrl + 'Recipes/Update';
+        this.http.put<RecipeDataPreParse>(url, recipe).subscribe({
+          next: (result) => {
+            console.log(
+              'Recipe number ' + recipe!.recipeId + ' has been updated.'
+            );
+            this.router.navigate(['/recipes']);
+          },
+          error: (e) => console.error(e),
+        });
+      } else {
+        var url = environment.baseUrl + 'Recipes/AddIntResponse';
+        this.http.post<RecipeDataPreParse>(url, recipe).subscribe({
+          next: (result) => {
+            console.log('Recipe number ' + result + ' has been created.');
+            this.router.navigate(['/recipes']);
+          },
+          error: (e) => console.error(e),
+        });
+      }
     }
   }
 }
