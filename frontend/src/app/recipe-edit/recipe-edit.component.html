@@ -2,6 +2,12 @@
   <h1>{{ title }}</h1>
   <p *ngIf="this.id && !recipe"><em>Loading...</em></p>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-error *ngIf="form.invalid && form.hasError('isDuplicateRecipe')">
+        <strong>Error: </strong>: A recipe with this title already exists.
+        Please give your recipe a unique title.
+      </mat-error>
+    </p>
     <mat-form-field>
       <mat-label>Title:</mat-label>
       <input
@@ -10,6 +16,9 @@
         required
         placeholder="Your recipe title"
       />
+      <mat-error *ngIf="this.form.controls['title'].errors?.['required']"
+        >Title is required.</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
@@ -24,6 +33,9 @@
         required
         placeholder="Your recipe ingredients"
       ></textarea>
+      <mat-error *ngIf="this.form.controls['ingredients'].errors?.['required']"
+        >Ingredients are required.</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
@@ -38,6 +50,9 @@
         required
         placeholder="Your recipe steps"
       ></textarea>
+      <mat-error *ngIf="this.form.controls['steps'].errors?.['required']"
+        >Steps are required.</mat-error
+      >
     </mat-form-field>
 
     <mat-checkbox type="checkbox" formControlName="crockPot"
@@ -45,7 +60,12 @@
     >
 
     <br /><br />
-    <button mat-flat-button color="primary" type="submit">
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid"
+    >
       {{ this.id ? "Save" : "Create" }}
     </button>
     <button
