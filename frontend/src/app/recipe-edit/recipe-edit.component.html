@@ -2,6 +2,12 @@
   <h1>{{ title }}</h1>
   <p *ngIf="this.id && !recipe"><em>Loading...</em></p>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-error *ngIf="form.invalid && form.hasError('isDuplicateRecipe')">
+        <strong>Error: </strong>: A recipe with this title already exists.
+        Please give your recipe a unique title.
+      </mat-error>
+    </p>
     <mat-form-field>
       <mat-label>Title:</mat-label>
       <input
@@ -11,7 +17,7 @@
         placeholder="Your recipe title"
       />
       <mat-error *ngIf="this.form.controls['title'].errors?.['required']"
-        >Name is required.</mat-error
+        >Title is required.</mat-error
       >
     </mat-form-field>
 
@@ -54,7 +60,12 @@
     >
 
     <br /><br />
-    <button mat-flat-button color="primary" type="submit">
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid"
+    >
       {{ this.id ? "Save" : "Create" }}
     </button>
     <button

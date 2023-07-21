@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { RecipeDataPreParse } from '../interfaces/RecipeDataPreParse';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -23,12 +31,16 @@ export class RecipeEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      title: new FormControl('', Validators.required),
-      ingredients: new FormControl('', Validators.required),
-      steps: new FormControl('', Validators.required),
-      crockPot: new FormControl(''),
-    });
+    this.form = new FormGroup(
+      {
+        title: new FormControl('', Validators.required),
+        ingredients: new FormControl('', Validators.required),
+        steps: new FormControl('', Validators.required),
+        crockPot: new FormControl(''),
+      },
+      null,
+      this.isDuplicateRecipe()
+    );
     this.loadData();
   }
 
@@ -84,5 +96,24 @@ export class RecipeEditComponent implements OnInit {
         });
       }
     }
+  }
+
+  isDuplicateRecipe(): AsyncValidatorFn {
+    return (
+      control: AbstractControl
+    ): Observable<{ [key: string]: any } | null> => {
+      var recipe = <RecipeDataPreParse>{};
+      recipe.recipeId = this.id ? this.id : 0;
+      recipe.title = this.form.controls['title'].value;
+      recipe.ingredients = this.form.controls['ingredients'].value;
+      recipe.steps = this.form.controls['steps'].value;
+
+      var url = environment.baseUrl + 'Recipes/IsDuplicateRecipe';
+      return this.http.post<boolean>(url, recipe).pipe(
+        map((result) => {
+          return result ? { isDuplicateRecipe: true } : null;
+        })
+      );
+    };
   }
 }
