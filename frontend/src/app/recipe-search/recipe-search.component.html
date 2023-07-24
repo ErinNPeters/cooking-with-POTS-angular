@@ -31,6 +31,7 @@
 
 <mat-paginator
   [hidden]="!recipes"
+  (page)="getData($event)"
   [pageSize]="5"
   [pageSizeOptions]="[2, 5, 10, 20]"
   showFirstLastButtons
