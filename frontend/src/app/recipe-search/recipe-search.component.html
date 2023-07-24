@@ -17,9 +17,13 @@
   [dataSource]="recipes"
   class="mat-elecation-z8"
   [hidden]="!recipes"
+  matSort
+  (matSortChange)="loadData()"
+  [matSortActive]="defaultSortColumn"
+  [matSortDirection]="defaultSortOrder"
 >
   <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef>Title</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
     <td mat-cell *matCellDef="let recipe">
       <a [routerLink]="['/recipe', recipe.recipeId]">{{ recipe.title }}</a>
     </td>
