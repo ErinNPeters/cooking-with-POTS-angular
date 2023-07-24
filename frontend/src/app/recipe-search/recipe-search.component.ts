@@ -26,7 +26,7 @@ export class RecipeSearchComponent implements OnInit {
   }
 
   getData(event: PageEvent) {
-    var url = environment.baseUrl + 'Recipes/api';
+    var url = environment.baseUrl + 'Recipes/SearchGridResult';
     var params = new HttpParams()
       .set('search', 'ALL')
       .set('pageIndex', event.pageIndex.toString())
