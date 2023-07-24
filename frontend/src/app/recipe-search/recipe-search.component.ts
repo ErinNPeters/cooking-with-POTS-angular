@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RecipeFromServer } from '../interfaces/RecipeDataPostParse';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-recipe-search',
@@ -9,8 +11,10 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./recipe-search.component.scss'],
 })
 export class RecipeSearchComponent implements OnInit {
-  public recipes!: RecipeFromServer[];
   public displayedColumns: string[] = ['title'];
+  public recipes!: MatTableDataSource<RecipeFromServer>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +25,8 @@ export class RecipeSearchComponent implements OnInit {
       )
       .subscribe({
         next: (result) => {
-          this.recipes = result;
+          this.recipes = new MatTableDataSource<RecipeFromServer>(result);
+          this.recipes.paginator = this.paginator;
         },
         error: (e) => console.error(e),
       });
