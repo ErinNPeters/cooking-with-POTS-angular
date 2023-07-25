@@ -2,15 +2,14 @@
 
 <p *ngIf="!recipes"><em>Loading...</em></p>
 
-<button
-  mat-flat-button
-  color="primary"
-  class="btn-add"
-  *ngIf="recipes"
-  [routerLink]="['/recipe']"
->
-  Add a new recipe
-</button>
+<mat-form-field [hidden]="!recipes">
+  <input
+    matInput
+    #filter
+    (keyup)="loadData(filter.value)"
+    placeholder="Filter by title, ingredients, or instructions"
+  />
+</mat-form-field>
 
 <table
   mat-table

@@ -20,6 +20,8 @@ export class RecipeSearchComponent implements OnInit {
   public defaultSortColumn: string = '';
   public defaultSortOrder: 'asc' | 'desc' = 'asc';
 
+  filterQuery?: string;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -29,17 +31,18 @@ export class RecipeSearchComponent implements OnInit {
     this.loadData();
   }
 
-  loadData() {
+  loadData(query?: string) {
     var pageEvent = new PageEvent();
     pageEvent.pageIndex = this.defaultPageIndex;
     pageEvent.pageSize = this.defaultPageSize;
+    this.filterQuery = query;
     this.getData(pageEvent);
   }
 
   getData(event: PageEvent) {
     var url = environment.baseUrl + 'Recipes/SearchGridResult';
     var params = new HttpParams()
-      .set('search', 'ALL')
+      .set('search', this.filterQuery ? this.filterQuery : 'ALL')
       .set('pageIndex', event.pageIndex.toString())
       .set('pageSize', event.pageSize.toString())
       .set('sortColumn', this.sort ? this.sort.active : this.defaultSortColumn)
