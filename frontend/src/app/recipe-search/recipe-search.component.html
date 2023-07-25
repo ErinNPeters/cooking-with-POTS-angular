@@ -2,24 +2,27 @@
 
 <p *ngIf="!recipes"><em>Loading...</em></p>
 
-<button
-  mat-flat-button
-  color="primary"
-  class="btn-add"
-  *ngIf="recipes"
-  [routerLink]="['/recipe']"
->
-  Add a new recipe
-</button>
+<mat-form-field [hidden]="!recipes">
+  <input
+    matInput
+    #filter
+    (keyup)="onFilterTextChanged(filter.value)"
+    placeholder="Filter by title, ingredients, or instructions"
+  />
+</mat-form-field>
 
 <table
   mat-table
   [dataSource]="recipes"
   class="mat-elecation-z8"
   [hidden]="!recipes"
+  matSort
+  (matSortChange)="loadData()"
+  [matSortActive]="defaultSortColumn"
+  [matSortDirection]="defaultSortOrder"
 >
   <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef>Title</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
     <td mat-cell *matCellDef="let recipe">
       <a [routerLink]="['/recipe', recipe.recipeId]">{{ recipe.title }}</a>
     </td>
@@ -28,3 +31,11 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+
+<mat-paginator
+  [hidden]="!recipes"
+  (page)="getData($event)"
+  [pageSize]="5"
+  [pageSizeOptions]="[2, 5, 10, 20]"
+  showFirstLastButtons
+></mat-paginator>
