@@ -6,7 +6,7 @@
   <input
     matInput
     #filter
-    (keyup)="loadData(filter.value)"
+    (keyup)="onFilterTextChanged(filter.value)"
     placeholder="Filter by title, ingredients, or instructions"
   />
 </mat-form-field>
