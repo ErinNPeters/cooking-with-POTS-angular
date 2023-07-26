@@ -8,10 +8,10 @@ import {
 } from '@angular/forms';
 import { RecipeDataPreParse } from '../interfaces/RecipeDataPreParse';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -27,7 +27,7 @@ export class RecipeEditComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
+    private recipeService: RecipeService
   ) {}
 
   ngOnInit(): void {
@@ -49,8 +49,7 @@ export class RecipeEditComponent implements OnInit {
     this.id = idParam ? +idParam : 0;
 
     if (this.id) {
-      var url = environment.baseUrl + 'Recipes/ForEdit/' + this.id;
-      this.http.get<RecipeDataPreParse>(url).subscribe({
+      this.recipeService.get(this.id.toString()).subscribe({
         next: (result) => {
           this.recipe = result;
           this.title = 'Edit - ' + this.recipe.title;
@@ -75,8 +74,7 @@ export class RecipeEditComponent implements OnInit {
         : false;
 
       if (this.id) {
-        var url = environment.baseUrl + 'Recipes/Update';
-        this.http.put<RecipeDataPreParse>(url, recipe).subscribe({
+        this.recipeService.put(recipe).subscribe({
           next: (result) => {
             console.log(
               'Recipe number ' + recipe!.recipeId + ' has been updated.'
@@ -86,8 +84,7 @@ export class RecipeEditComponent implements OnInit {
           error: (e) => console.error(e),
         });
       } else {
-        var url = environment.baseUrl + 'Recipes/AddIntResponse';
-        this.http.post<RecipeDataPreParse>(url, recipe).subscribe({
+        this.recipeService.post(recipe).subscribe({
           next: (result) => {
             console.log('Recipe number ' + result + ' has been created.');
             this.router.navigate(['/recipes']);
@@ -108,8 +105,7 @@ export class RecipeEditComponent implements OnInit {
       recipe.ingredients = this.form.controls['ingredients'].value;
       recipe.steps = this.form.controls['steps'].value;
 
-      var url = environment.baseUrl + 'Recipes/IsDuplicateRecipe';
-      return this.http.post<boolean>(url, recipe).pipe(
+      return this.recipeService.isDuplicateRecipe(recipe).pipe(
         map((result) => {
           return result ? { isDuplicateRecipe: true } : null;
         })

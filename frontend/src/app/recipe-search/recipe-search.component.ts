@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RecipeFromServer } from '../interfaces/RecipeDataPostParse';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-search',
@@ -28,7 +27,7 @@ export class RecipeSearchComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private recipeService: RecipeService) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -54,27 +53,28 @@ export class RecipeSearchComponent implements OnInit {
   }
 
   getData(event: PageEvent) {
-    var url = environment.baseUrl + 'Recipes/SearchGridResult';
-    var params = new HttpParams()
-      .set('search', this.filterQuery ? this.filterQuery : 'ALL')
-      .set('pageIndex', event.pageIndex.toString())
-      .set('pageSize', event.pageSize.toString())
-      .set('sortColumn', this.sort ? this.sort.active : this.defaultSortColumn)
-      .set(
-        'sortOrder',
-        this.sort ? this.sort.direction : this.defaultSortOrder
-      );
+    var sortColumn = this.sort ? this.sort.active : this.defaultSortColumn;
+    var sortOrder = this.sort ? this.sort.direction : this.defaultSortOrder;
+    var searchText = this.filterQuery ? this.filterQuery : 'ALL';
 
-    this.http.get<any>(url, { params }).subscribe({
-      next: (result) => {
-        console.log(result);
-        this.paginator.length = result.totalCount;
-        this.paginator.pageIndex = result.pageIndex;
-        this.paginator.pageSize = result.pageSize;
+    this.recipeService
+      .getSearchGridData(
+        event.pageIndex,
+        event.pageSize,
+        sortColumn,
+        sortOrder,
+        searchText
+      )
+      .subscribe({
+        next: (result) => {
+          console.log(result);
+          this.paginator.length = result.totalCount;
+          this.paginator.pageIndex = result.pageIndex;
+          this.paginator.pageSize = result.pageSize;
 
-        this.recipes = new MatTableDataSource<RecipeFromServer>(result.data);
-      },
-      error: (e) => console.error(e),
-    });
+          this.recipes = new MatTableDataSource<RecipeFromServer>(result.data);
+        },
+        error: (e) => console.error(e),
+      });
   }
 }
