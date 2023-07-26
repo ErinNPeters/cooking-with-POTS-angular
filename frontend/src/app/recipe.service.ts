@@ -6,6 +6,7 @@ import {
   mapRecipeFromServer,
 } from './interfaces/RecipeDataPostParse';
 import { environment } from 'src/environments/environment';
+import { RecipeDataPreParse } from './interfaces/RecipeDataPreParse';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ import { environment } from 'src/environments/environment';
 export class RecipeService {
   constructor(private http: HttpClient) {}
 
-  getData(
+  getSearchGridData(
     pageIndex: number,
     pageSize: number,
     sortColumn: string,
@@ -29,6 +30,26 @@ export class RecipeService {
       .set('sortOrder', sortOrder);
 
     return this.http.get<SearchGridResult<RecipeFromServer>>(url, { params });
+  }
+
+  get(id: string): Observable<RecipeDataPreParse> {
+    var url = environment.baseUrl + 'Recipes/ForEdit/' + id;
+    return this.http.get<RecipeDataPreParse>(url);
+  }
+
+  put(item: RecipeDataPreParse): Observable<RecipeDataPreParse> {
+    var url = environment.baseUrl + 'Recipes/Update';
+    return this.http.put<RecipeDataPreParse>(url, item);
+  }
+
+  post(item: RecipeDataPreParse): Observable<RecipeDataPreParse> {
+    var url = environment.baseUrl + 'Recipes/AddIntResponse';
+    return this.http.post<RecipeDataPreParse>(url, item);
+  }
+
+  isDuplicateRecipe(item: RecipeDataPreParse): Observable<boolean> {
+    var url = environment.baseUrl + 'Recipes/IsDuplicateRecipe';
+    return this.http.post<boolean>(url, item);
   }
 }
 

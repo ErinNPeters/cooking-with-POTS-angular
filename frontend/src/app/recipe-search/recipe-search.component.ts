@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RecipeFromServer } from '../interfaces/RecipeDataPostParse';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -60,7 +58,7 @@ export class RecipeSearchComponent implements OnInit {
     var searchText = this.filterQuery ? this.filterQuery : 'ALL';
 
     this.recipeService
-      .getData(
+      .getSearchGridData(
         event.pageIndex,
         event.pageSize,
         sortColumn,
