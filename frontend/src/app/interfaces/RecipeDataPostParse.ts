@@ -1,14 +1,3 @@
-export interface RecipeData {
-  recipeId: number;
-  title: string;
-  ingredients: IngredientDto[];
-  userId: string;
-  userName: string;
-  steps: StepDto[];
-  crockPot: boolean;
-  sauceName?: string;
-}
-
 export interface StepDto {
   recipeId: number;
   stepId: number;
@@ -33,7 +22,7 @@ export interface RecipeFromServer {
   sauceName?: string;
 }
 
-const recipes: RecipeData[] = [
+export const recipeTestDataPostParse: RecipeFromServer[] = [
   {
     recipeId: 1,
     title: 'Smothered Pork Chops',
@@ -41,7 +30,7 @@ const recipes: RecipeData[] = [
     userName: 'erin@test.com',
     sauceName: 'Smothered',
     crockPot: true,
-    ingredients: [
+    ingredientDtos: [
       {
         ingredientId: 1,
         recipeId: 1,
@@ -97,7 +86,7 @@ const recipes: RecipeData[] = [
         sauceIngredient: true,
       },
     ],
-    steps: [
+    stepDtos: [
       {
         stepId: 1,
         recipeId: 1,
@@ -113,25 +102,3 @@ const recipes: RecipeData[] = [
     ],
   },
 ];
-
-export const mapRecipeFromServer = (recipe: RecipeFromServer): RecipeData => ({
-  ...recipe,
-  ingredients: recipe.ingredientDtos
-    ? recipe.ingredientDtos.map((ingredient) => ({ ...ingredient }))
-    : [],
-  steps: recipe.stepDtos ? recipe.stepDtos.map((step) => ({ ...step })) : [],
-});
-
-export const getCrockPotRecipes = async (): Promise<RecipeData[]> => {
-  await wait(500);
-  return recipes.filter((r) => r.crockPot === true);
-};
-
-const wait = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
-export const getRecipeNow = (recipeId: number): RecipeData => {
-  const results = recipes.filter((r) => r.recipeId === recipeId);
-  return results[0];
-};
