@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 
 import { RecipeSearchComponent } from './recipe-search.component';
 import { RecipeService, SearchGridResult } from '../recipe.service';
@@ -31,7 +31,7 @@ describe('RecipeSearchComponent', () => {
       })
     );
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [RecipeSearchComponent],
       imports: [
         AngularMaterialModule,
@@ -55,5 +55,22 @@ describe('RecipeSearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display a "Recipes" title', () => {
+    let title = fixture.nativeElement.querySelector('h1');
+    expect(title.textContent).toEqual('Recipes');
+  });
+
+  it('should contain a table with a list of one or more recipes', () => {
+    let tableRows = fixture.nativeElement.querySelectorAll('tr');
+    console.log(tableRows);
+    expect(tableRows.length).toBeGreaterThan(0);
+  });
+
+  it('recipe Id should be 1', () => {
+    fixture.detectChanges();
+    let data = fixture.componentInstance.recipes.data;
+    expect(data[0].recipeId).toEqual(1);
   });
 });
