@@ -23,7 +23,7 @@ describe('HomeComponent', () => {
     const fixture = TestBed.createComponent(HomeComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.p')?.textContent).toContain(
+    expect(compiled.querySelector('p')?.textContent).toContain(
       'Slow cookers are the best way'
     );
   });

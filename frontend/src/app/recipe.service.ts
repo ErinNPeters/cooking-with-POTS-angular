@@ -1,10 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  RecipeFromServer,
-  mapRecipeFromServer,
-} from './interfaces/RecipeDataPostParse';
+import { RecipeFromServer } from './interfaces/RecipeDataPostParse';
 import { environment } from 'src/environments/environment';
 import { RecipeDataPreParse } from './interfaces/RecipeDataPreParse';
 

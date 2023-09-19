@@ -67,7 +67,6 @@ export class RecipeSearchComponent implements OnInit {
       )
       .subscribe({
         next: (result) => {
-          console.log(result);
           this.paginator.length = result.totalCount;
           this.paginator.pageIndex = result.pageIndex;
           this.paginator.pageSize = result.pageSize;
